@@ -27,7 +27,7 @@ IMPLEMENTATION OVERVIEW:
 The program imports Python's standard `sys` module to read from standard input (`sys.stdin`). It iterates line-by-line over incoming text and prints each line using `print(line, end='')`. The `end=''` argument prevents adding extra newline characters, ensuring the output matches the input file line-for-line.
 So, we created a Python file named helloworld.py containing the following text:
 
-'''python
+```python
 import sys
 
 def main():
@@ -36,7 +36,7 @@ def main():
         print(line, end='')
 
 if __name__ == "__main__":
-    main() '''
+    main() ```
     
 Then, in the exact same folder that contains our Python file, we created a plain text file named myfile. Inside, we type the output we are aiming for:
 Hello from David Mellor
