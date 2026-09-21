@@ -36,7 +36,8 @@ def main():
         print(line, end='')
 
 if __name__ == "__main__":
-    main() ```
+    main()
+```
     
 Then, in the exact same folder that contains our Python file, we created a plain text file named myfile. Inside, we type the output we are aiming for:
 Hello from David Mellor
