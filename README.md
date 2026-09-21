@@ -40,13 +40,18 @@ if __name__ == "__main__":
 ```
     
 Then, in the exact same folder that contains our Python file, we created a plain text file named myfile. Inside, we type the output we are aiming for:
+
 Hello from David Mellor
+
 Since we are aiming to get the output using Command Prompt:
-We open our Command Prompt in Windows, type cd , space, and then drop the folder containing the two files in the terminal window; 
-Once it is in the prompt, we can run the following command and press Enter:
-python3 helloworld.py < myfile
+
+1. We open our Command Prompt in Windows, type `cd` , space, and then drop the folder containing the two files in the terminal window; 
+2. Once it is in the prompt, we can run the following command and press Enter:
+`python3 helloworld.py < myfile`
+
 Last step: The output: The screen displays in plain text, 
 Hello from David Mellor
+
 No matter how many lines the “myfile” has, once we run the command, the loop continuously listens to standard input and prints each line one by one until it reaches the End Of File.
 
 
