@@ -2,6 +2,7 @@ CS526 Homework Assignment 2
 #Disclaimer : Notes about background and the use of AI
 As I mentioned earlier in the semester, I come from 18 years in fixed income trading and portfolio management, and I had no coding or computer science background before starting this master's. I am learning Python in parallel with this course. Besides the Information Structures with Python course, I took two beginner courses on edX (*Computing in Python I: Fundamentals and Procedural Programming* and *Computing in Python II: Control Structures*) to try and catch up faster.
 I used Gemini, ChatGPT and Claude as tutoring help on this assignment, mainly on the coding. I asked them to guide me through the logic of each problem and to explain each function and concept along the way, and I used them to review my code and test edge cases. To be honest, I could not have written this code alone two weeks ago. I worked on Problems 2 and 4 for two weeks, studying classes, functions, modules and recursion, and I am much more comfortable with nodes, pointers and recursive functions than I was at the start. The explanations below are written in my own words, and I describe the mistakes I found along the way, because working through them is where most of my learning happened.
+
 ## Introduction
 This homework has four problems:
 1. Problem 1: a short written question about the advantage of a tail pointer in a linked list.
@@ -26,11 +27,13 @@ The main idea for operations that change the chain (‘insert’, ‘delete’, 
 - Index checks: for ‘get’, ‘update’, and ‘delete_at’, the index must satisfy ‘0 <= index < count’; for ‘insert’ it may also equal ‘count’ (inserting at the end). Otherwise, an `IndexError` is raised.
 I drew the boxes and arrows on paper for each case (empty list, one node, first node, last node, middle) and checked that ‘head’, ‘tail’ and ‘count’ stay correct.
 Driver (‘problem2_driver.py’). For each input line, the driver strips the whitespace, skips blank lines and lines starting with ‘#,’ splits the line into words, and treats the first word as the “directive” and the rest as its “arguments”. It then checks, before calling anything, that the directive is one of the allowed ones, that the number of arguments is right, and that an index is a whole number. If everything is fine it calls the matching method with ‘getattr(my_list, directive)(*args)’, which is the pattern from class. If something is wrong, it prints a warning and continues with the next line. After the last line, it prints ‘Final list:’ followed by the actual list of numbers separated by “- >”.
+
 Problem 3: climbing stairs
 The hint says to think about the first move. The first move can be 1, 2, or 3 steps, and after it, we face the same problem on a shorter staircase. So the number of ways is the sum of three groups: ‘ways(n-1)’ (first move 1 step), ‘ways(n-2)’ (first move 2 steps), and ‘ways(n-3)’ (first move 3 steps). These groups do not overlap and together cover every path. I checked this against the example in the assignment: for 4 steps the groups contain 4 + 2 + 1 = 7 paths.
 a)	Base cases: ‘ways(n)’ returns 0 when ‘n < 0’, because the move overshot the top and the path is invalid. It returns 1 when ‘n == 0’, because the path landed exactly on the top and counts as one way. ‘ways(0)’ has to be 1 (the one way to climb nothing is to do nothing): every successful path ends by reaching exactly 0, and the recursion adds up these 1s. If ‘ways(0)’ were 0, every answer would be 0.
 b)	Only 1 or 2 steps. Then ‘ways(n) = ways(n-1) + ways(n-2)’, which gives the Fibonacci sequence (1, 1, 2, 3, 5, 8, ...). ‘
 Output results: ‘ways(3) = 4’, ‘ways(5) = 13’, ‘ways(10) = 274’.
+
 Problem 4: sorted doubly linked list
 Each node has a ‘prev’ and a ‘next’ arrow, and the list keeps ‘head’, ‘tail’, and a size (‘_size’, named this way so it does not clash with the ‘count(value)’ method).
 - ‘add’ has four cases: (1) empty list, so the new node is both head and tail; (2) the value is less than or equal to the head's value, so it goes at the front; (3) the value is greater than the tail's value, so it goes at the end; (4) otherwise I walk until I find the first node whose value is not smaller, and insert the new node right before it by fixing four arrows (`new.next`, `new.prev`, `curr.prev.next`, `curr.prev`). Duplicates are allowed.
