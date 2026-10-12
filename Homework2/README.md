@@ -28,11 +28,15 @@ The main idea for operations that change the chain (‘insert’, ‘delete’, 
 I drew the boxes and arrows on paper for each case (empty list, one node, first node, last node, middle) and checked that ‘head’, ‘tail’ and ‘count’ stay correct.
 Driver (‘problem2_driver.py’). For each input line, the driver strips the whitespace, skips blank lines and lines starting with ‘#,’ splits the line into words, and treats the first word as the “directive” and the rest as its “arguments”. It then checks, before calling anything, that the directive is one of the allowed ones, that the number of arguments is right, and that an index is a whole number. If everything is fine it calls the matching method with ‘getattr(my_list, directive)(*args)’, which is the pattern from class. If something is wrong, it prints a warning and continues with the next line. After the last line, it prints ‘Final list:’ followed by the actual list of numbers separated by “- >”.
 
+
+
 Problem 3: climbing stairs
 The hint says to think about the first move. The first move can be 1, 2, or 3 steps, and after it, we face the same problem on a shorter staircase. So the number of ways is the sum of three groups: ‘ways(n-1)’ (first move 1 step), ‘ways(n-2)’ (first move 2 steps), and ‘ways(n-3)’ (first move 3 steps). These groups do not overlap and together cover every path. I checked this against the example in the assignment: for 4 steps the groups contain 4 + 2 + 1 = 7 paths.
 a)	Base cases: ‘ways(n)’ returns 0 when ‘n < 0’, because the move overshot the top and the path is invalid. It returns 1 when ‘n == 0’, because the path landed exactly on the top and counts as one way. ‘ways(0)’ has to be 1 (the one way to climb nothing is to do nothing): every successful path ends by reaching exactly 0, and the recursion adds up these 1s. If ‘ways(0)’ were 0, every answer would be 0.
 b)	Only 1 or 2 steps. Then ‘ways(n) = ways(n-1) + ways(n-2)’, which gives the Fibonacci sequence (1, 1, 2, 3, 5, 8, ...). ‘
 Output results: ‘ways(3) = 4’, ‘ways(5) = 13’, ‘ways(10) = 274’.
+
+
 
 Problem 4: sorted doubly linked list
 Each node has a ‘prev’ and a ‘next’ arrow, and the list keeps ‘head’, ‘tail’, and a size (‘_size’, named this way so it does not clash with the ‘count(value)’ method).
