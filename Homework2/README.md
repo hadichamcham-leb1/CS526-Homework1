@@ -8,9 +8,11 @@ This homework has four problems:
 2. Problem 2: a ‘Node’ class and a ‘SinglyLinkedList’ class with CRUD operations (‘problem2.py’), plus a driver (‘problem2_driver.py’) that reads commands from standard input, calls the matching list method, prints results, and prints a warning for any bad line instead of crashing.
 3. Problem 3: a recursive function ‘ways(n)’ that counts the ways to climb ‘n’ stairs taking 1, 2, or 3 steps at a time (‘problem3.py’), plus two written questions.
 4. Problem 4: a ‘SortedDoublyLinkedList’ class that always keeps its values in ascending order (‘problem4.py’), with recursive helpers for ‘total’, ‘count’, ‘exists’ and ‘print_list’, plus ‘sum_middle_three’ and ‘median’, and a driver that reads from standard input (‘problem4_driver.py’).
+
 Answer to problem 1: Advantage of a tail pointer
 With a tail pointer, adding a node at the end of the list takes the same short time no matter how long the list is, because the list already knows where the last node is. Without it, ‘append’ has to walk from the head through every node to find the end, so each append takes longer as the list grows, and building a list of n items a much longer time. It is like keeping a bookmark on the last page.
 The cost of keeping a tail is bookkeeping: every operation that can change the last node (for example ‘delete’) has to update ‘tail’ as well. Also, in a singly linked list the tail does not make removing the last node faster, because we still need the node before it and have no backward link. In a doubly linked list, the tail also helps with the end of the list from the other direction.
+
 Algorithm
 Problem 2: singly linked list
 I think of the list as a chain of boxes, like the example from lecture 1. Each box (‘Node’) holds a value and an arrow (‘next’) to the next box. The `SinglyLinkedList` object only remembers where the chain starts (‘head’), where it ends (‘tail’), and how many nodes there are (‘count’). There is no stored "position 3", so to reach an index I have to walk from the head, one node at a time.
