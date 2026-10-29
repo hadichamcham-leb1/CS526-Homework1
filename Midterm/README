@@ -1,0 +1,38 @@
+Introduction
+
+This midterm has three problems, each solved in its own file:
+
+Problem 1: reads two lines from standard input, the first line is the number of days while the second lines is a series of values representing the cumulative snowfall for each day.
+For each input file the solution should mention if there exists three consecutive days whose combined snowfall is strictly more than half of the total snowfall across all n days.  
+
+Problem 2: This problem simulates how a virus spreads day by day across a square state whose counties are arranged into an NxN grid. Given a input of row/column coordinates the output should mention if there are any healthy counties left or not once the code is done running.
+
+Problem 3: This problem gives a nxn puzzle board where the square root of n is an integer. Noting that a symbol cannot be repeated per row, nor per column nor per sub-board, and given a number of accepted symbols in the input file, we have to figure out if the board is valid or not. The symbol “.” (dot) is not considered an invalid symbol and can be repeated. 
+
+Algorithm
+
+Problem 1: snowfall
+The input array A is a cumulative snowfall array, where A[i] represents the total snowfall from Day 1 through Day i. 
+Since we already have the cumulative snowfall array, we do not need to convert into daily values; We can find the snowfall for any three days using the formula provided in the notes of the problem. All we have to do is iterate through each three cumulative days using a for loop starting with the first three days. The base case check if is when n < 3, which prompts the function tor return false immediately. If n is equal 3, the answer is yes unless there is there is no snowfall at all. 
+
+Problem 2: pandemic
+Instead of re-scanning the entire grid over and over, we maintain coordinate (row, column) sets of infected cells and uninfected cells. 
+We run a while loop since we don’t know for how many days we will be getting new infections. 
+Now the main part of the algorithm is finding a way to connect infected counties to the counties they will infect. If an infected county is pointing diagonally to another infected county, and the difference in rows and columns is one, then they will infect a new county. (Of course, we consider the edge cases and don’t look beyond the board). So once one infected county found another, the corners between these two are newly infected counties for the next day. We continue iterating until all the counties are infected or if the loop stops because new counties can not be infected anymore.
+
+Problem 3: Symbol puzzle game 
+This puzzle problem reminds us of the Sudoku game, although here the accepted symbols can change depending on the input. Since we can not have duplicates withing the same row, nor the same column, nor the same sub-board, we want to avoid looping over the board 3 times which would be highly inefficient. 
+We go through the grid once and use tracking sets as lists for each row, column and sub-board. The tricky part is the sub-board; one solution for this is creating a “box_key” using floor division to a value from 0 to s-1 (s being the square root of n) and by doing so we can see if two cells within the same sub-board have the same symbol. 
+
+How to run
+From the folder with the files (on Windows, use py instead of python3 if python3 is not recognized):
+py snowfall.py < Quiz midterm/snowfall_input1.txt
+py pandemic.py < Quiz midterm/pandemic_input1.txt
+py puzzle.py < Quiz midterm/puzzle_game_input1.txt
+
+Test files
+I tested all the files from the assignment folder on blackboard for all the problems: I have attached the screenshots taken from the command prompt showing the results of the code running for each problem.
+
+Disclaimer: 
+After struggling during the first few sessions of this course, I feel that I improved a lot during the last few weeks. I know how to tackle the problems and find a solution through the right algorithm. I am improving in Python and my coding skills are exponentially getting better. I am still unable to put a complete code without help but I will get there hopefully.
+Occasionally, I had to use AI agents to help me find the right way to code the ideas and solutions that I had for the problems in this midterm. 
