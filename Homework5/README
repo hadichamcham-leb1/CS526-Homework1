@@ -147,12 +147,13 @@ main()  asks for the file name, reads the four lines of the file (sizes
 on lines 1-2, values on lines 3-4), calls longest_sequence and prints the result.
 
 ## How to run the code
-From the folder with the files (on Windows, use py instead of python3 if python3 is not recognized):
-py longest_sequence.py < longest_seq1.txt
-py longest_sequence.py < longest_seq2.txt
-py longest_sequence.py < longest_seq3.txt
-py longest_sequence.py < longest_seq4.txt
-py longest_sequence.py < longest_seq5.txt
-py longest_sequence.py < longest_seq6.txt                                
+py longest_sequence.py
+When the program prints "File name:", type the name of the input file,
+for example longest_seq1.txt, and press Enter. Example output:
+File Input: longest_seq1.txt
+Longest Sequence: 4
+Input file format (4 lines): size of A, size of B, the values of A
+separated by spaces, the values of B separated by spaces.
+                
                                 
                                 
