@@ -1,0 +1,158 @@
+## Test files for all problems
+Screenshots uploaded to show the code running for all problems. All input files on Blackboard have been tested.
+
+Problem 1:
+
+The program builds a tree by randomly generating an input as instructed. It then tests the following operations:
+
+Node ADT: 
+It stores a value and two links, left and right. A missing child is None. Node(value) creates a node with both links set to None.
+
+BST ADT operations:
+    1. AddNode(value) : Inserts value. Smaller values go to the left, larger values go to the right. 
+    A value that is already in the tree is ignored. The new node is always added as a leaf.
+    2. FindNode(value) : Returns True if the value is in the tree and False if it is not.
+    3. DeleteNode(value) : Removes the value from the tree, if present; returns "Value not found" if not. 
+    4. PrintTree() : Prints all values in sorted order (inorder traversal), one per line.
+
+The BST rule:
+For every node, all values in its left subtree are smaller and all values in its right subtree are larger.
+
+## The Algorithm
+The key idea : because of the BST rule, comparing a value with a node tells us which whole subtree to ignore (left if smaller, right if larger). 
+So every operation follows a single path from the root downwards.
+  FindNode(value)
+    1. Start at the root.
+    2. If the current node is empty, the value is not in the tree: False.
+    3. If the value equals the node's value: True.
+    4. If the value is smaller, continue with the left child; otherwise
+       continue with the right child. Repeat from step 2.
+
+  AddNode(value)
+    1. If the tree is empty, the new node becomes the root.
+    2. Otherwise walk down as in FindNode.
+    3. If the value equals a node's value, stop (duplicates are ignored).
+    4. When the child in the chosen direction is empty, attach the new
+       node there. A new node is always a leaf.
+
+  PrintTree()
+    1. Print the left subtree (recursively), then the node's value, then
+       the right subtree (recursively).
+    2. Since left values < node < right values at every node, the values
+       come out in sorted order.
+
+  DeleteNode(value)
+    1. Find the node as in FindNode. If it does not exist, change nothing.
+    2. Leaf (no children): remove it (the parent's link becomes empty).
+    3. One child: replace the node by its child.
+    4. Two children: find the predecessor (go to the left child, then go
+       right as long as possible). Copy its value into the node, then
+       delete the predecessor from the left subtree (it has no right
+       child, so this is case 2 or 3).
+    Why this is correct: the predecessor is larger than every other value
+    in the left subtree and smaller than every value in the right
+    subtree, so after the copy the BST rule still holds. 
+    The method is recursive and returns the new root of each subtree, so
+    the parent re-attaches it (node.left = delete(node.left, value)).
+    This also covers deleting the root without a special case.
+
+## Code explanation 
+Node, BST classes      the Node ADT and BST ADT described above.
+findNodeInTree(node, value)    the FindNode steps (recursive).
+treeInsert(node, value)        the AddNode steps.
+printSubTree(node)      the inorder traversal used by PrintTree.
+treeDelete(node, value)  the DeleteNode steps.
+getLargest(node)       follows right links to the largest node of a
+subtree; used to find the predecessor.
+AddNode, FindNode, DeleteNode, PrintTree are the methods of BST that call 
+the functions above. AddNode and DeleteNode also update self.root.
+
+## How to run the code
+No input is required. The program runs a demonstration (main):
+    1. It generates a random number of unique values (between 5 and 50),
+       each between 1 and 1000, prints them, and inserts them into an
+       empty BST with AddNode.
+    2. It prints the tree with PrintTree (sorted order).
+    3. It adds a new value that is not already present and prints the tree.
+    4. It deletes a randomly chosen existing value and prints the tree.
+    5. It searches with FindNode for a value that is in the tree
+       (positive test: the value that was added) and for a value that is
+       not in the tree (negative test).
+  Because the values are random, the output is different on every run.
+
+Problem 2: Counting vowels decoding of Morse Code
+## The Algorithm
+The table has one row per offset (position in the string) and three
+columns for vowels of length 1, 2 and 3 symbols.
+Cell [offset][length-1] holds the number of ways to decode everything
+BEFORE the offset, followed by a vowel of that length that starts at the
+offset. It holds 0 if no vowel of that length starts there (the symbols
+do not spell a vowel, or not enough symbols are left).
+P(offset) = number of ways to decode the symbols before the offset.
+Base case:  P(0) = 1 (one way to decode nothing).
+Recurrence: P(offset) = cell[offset-1][length 1]
+                          + cell[offset-2][length 2]
+                          + cell[offset-3][length 3]
+(terms with a negative offset are left out)
+This works because the last vowel of any decoding has length 1, 2 or 3
+and these three groups do not overlap.
+The table is filled from left to right in a single pass, so every cell
+that is needed is already filled in.
+Answer = P(n), computed with the same diagonal sum one position past the
+end of the string.
+
+## Code explanation
+vowel_at_position_with_len_1(offset, list)  True if a "." starts at offset (E).
+vowel_at_position_with_len_2(offset, list)  True if ".-" or ".." starts at
+offset (A or I). It first checks that two symbols are left.
+vowel_at_position_with_len_3(offset, list)  True if "---" or "..-"
+starts at offset (O or U). It first checks that three symbols are left.
+reverse_vowel_at_diagonal_position(offset, matrix)  computes P(offset)
+by adding the three diagonal cells described above.
+vowel_combinations(list)  fills the table offset by offset and returns
+P(n).
+main()  reads n and the string, calls vowel_combinations and prints the result.
+
+## How to run the code
+From the folder with the files (on Windows, use py instead of python3 if python3 is not recognized):
+py vowel_combinations.py < vowel_input1.txt
+py vowel_combinations.py < vowel_input2.txt                                
+py vowel_combinations.py < vowel_input3.txt
+py vowel_combinations.py < vowel_input4.txt
+
+Problem 3: Longest alternating increasing sequence
+## The Algorithm
+Idea: build the sequence as a chain, and ask one question about each element:
+end_A(p) = the length of the longest valid sequence that ends exactly at A[p]
+end_B(p) = the same for B[p]  
+The element just before A[p] in the chain must come from B, at an earlier position 
+q < p, with a smaller value B[q] < A[p]. So:
+end_A(p) = 1 + the largest end_B(q) over all q < p with B[q] < A[p]
+(or just 1 if no such q exists)
+end_B(p) = 1 + the largest end_A(q) over all q < p with A[q] < B[p]
+(or just 1 if no such q exists)
+The answer is the largest value of end_A(p) or end_B(p) over all positions p.
+Memoization: the same question (for example end_A(1)) would be asked many times,
+so each answer is stored in a dictionary (memo_A, memo_B) the first time it is
+computed and looked up afterwards. Without this the program takes exponential time.
+
+## Code explanation
+longest_sequence(A, B)  runs the algorithm and returns the length.
+end_A(p), end_B(p)    the two memoized functions described above.
+"best = 1"         the element alone is a valid sequence.
+"for q in range(p)" tries every earlier position as the previous element.
+"if p in memo"     looks up an answer that was already computed.
+final loops: take the maximum over all positions of A and B.
+main()  asks for the file name, reads the four lines of the file (sizes
+on lines 1-2, values on lines 3-4), calls longest_sequence and prints the result.
+
+## How to run the code
+From the folder with the files (on Windows, use py instead of python3 if python3 is not recognized):
+py longest_sequence.py < longest_seq1.txt
+py longest_sequence.py < longest_seq2.txt
+py longest_sequence.py < longest_seq3.txt
+py longest_sequence.py < longest_seq4.txt
+py longest_sequence.py < longest_seq5.txt
+py longest_sequence.py < longest_seq6.txt                                
+                                
+                                
