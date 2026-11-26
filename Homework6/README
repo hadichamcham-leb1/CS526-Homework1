@@ -1,5 +1,6 @@
 ## Test files for all problems
 Screenshots uploaded to show the code running for all problems. All input files on Blackboard have been tested.
+For the very long outputs, I attached a screenshot of the beginning and the end of the output.
 
 Problem 1:
 
@@ -120,7 +121,7 @@ In a MaxHeap, peek() and extract_min() return the value on top, which is the lar
 From the folder with the files (on Windows, use py instead of python3 if python3 is not recognized):
 
 For Problem 1:
-py merge_resources.py < merge_input1.txt (all the way to merge_input9.txt)
+py Merge_Resources.py < merge_input1.txt (all the way to merge_input9.txt)
 
 For Problem 2:
 py Heap_Resources.py < heap_input1.txt (all the way to heap_input10.txt)
