@@ -1,0 +1,143 @@
+## Test files for all problems
+Screenshots uploaded to show the code running for all problems. All input files on Blackboard have been tested.
+
+Problem 1:
+
+## The Algorithm
+
+Each register's log is already sorted, so the next sale in the merged log
+must be the earliest unused sale of one of the registers. This is the merge
+step of merge sort, extended from two lists to k lists. I use a priority
+queue (a min-heap) that holds only the next unused sale of each register,
+so it never has more than k entries, at most one per register. Each entry
+has the key (time, register number). Python compares tuples from left to
+right, so the queue orders by time and uses the register number only to
+break ties, which puts the lower register first. The algorithm inserts the
+first sale of every non-empty register, then repeats: remove the smallest
+entry, append it to the result, and insert the next sale of the same
+register if it has one. Removing before inserting is what keeps the queue
+within k entries, and the result comes out sorted without any sorting call.
+Each sale is inserted once and removed once, so the running time is
+O(N log k) for N sales.
+
+## Code explanation
+
+This problem has 4 parts. MinHeap is my own priority queue: a binary heap stored
+in a python list, where children of index i are at 2i + 1 and 2i + 2 and its 
+parent is at (i-1) // 2. insert adds an entry at the end and bubbles it up
+while its key is smaller than its parent's; remove_min swaps the root with the 
+last entry, removes it, and bubbles the root down by swapping with the smaller
+child. parse_line turns a line into a list of numbers and read_logs reads one 
+log per line from standard input. merge_logs(logs) runs the algorithm above, 
+using a list next_index that remembers which sale of each register comes next.
+The main block reads the logs, calls merge_logs once, and prints the three lines.
+
+Problem 2:
+
+My solution has a Node class and a MinHeap class. Instead of searching for the
+next free spot, the heap reaches it in O(log n) steps from its position
+number, and it restores the heap order by swapping values between nodes.
+No heapq, sort() or sorted() is used.
+
+## The Algorithm
+
+Each Node holds a value and links to its left child, right child and
+parent. MinHeap holds the root and a size counter. Two rules always hold:
+heap order (every node <= its children, so the minimum is at the root) and
+complete shape (every level full except possibly the last, filled from the
+left).
+Positions are numbered 1, 2, 3, ... in level order. We write a position in
+binary and drop the leading 1: the remaining digits are the path from the
+root (0 = left, 1 = right). Position 6 = 110, so the path is right, left.
+The next free spot is position size + 1, the last node is at position size,
+and the parent of position p is p // 2.
+ 
+    insert        attach a node at position size + 1, then upheap: swap values
+                  with the parent while strictly smaller.            
+    peek          return the root's value (IndexError if empty).     
+    extract_min   save the root's value, copy the last node's value into the
+                  root, detach the last node, then downheap: swap with the
+                  smaller child while that child is smaller.        
+    delete        find a node with the value (skipping subtrees whose root is
+                  already larger), move the last node's value into it, detach
+                  the last node, then apply upheap and downheap. Returns True
+                  or False; removes one copy only.        
+    build         attach all values in position order without reordering, then
+                  downheap every node with a child from position size // 2 down
+                  to 1.                     
+    heap_sort     copy the values into a temporary heap and extract_min until
+                  it is empty; the original heap is unchanged (the copy costs
+                  O(n) extra memory).                                
+    print_heap    row = depth of the node; column = its place in an in-order
+                  walk times a cell width; a '/' or '\' goes halfway between a
+                  child and its parent.
+
+# Code explanation
+
+Problem 2 contains Node, MinHeap and parse_line. The helpers in MinHeap are _node_at
+(which follows a position's binary path from the root), _add_node ( which attaches a 
+node to the next free spot), _upheap, _downheap and _find (the search used by delete);
+the public methods are the ones listed above. (more specific explanation in the file)
+
+Problem 3:
+
+## The Algorithm:
+
+Split the numbers seen so far into two halves and keep each half in a heap:
+    low  = MaxHeap   the smaller half; its root is the largest of them
+    high = MinHeap   the larger half;  its root is the smallest of them
+The median always lies at the boundary between the halves, and both roots sit exactly
+at that boundary, so nothing ever needs to be sorted.
+ 
+Two rules are true after every sale:
+  1. Order:   every value in low is <= every value in high.
+  2. Balance: len(low) == len(high) or len(low) == len(high) + 1.
+
+For each new sale x:
+  1. Place it: if low is empty or x <= low's root, insert x into low;
+       otherwise insert x into high. This keeps rule 1.
+  2. Rebalance (rule 2):
+      - if low has two more values than high, move low's root into high;
+      - if high has more values than low, move high's root into low.
+      At most one of the two can happen, and moving a root across keeps rule 1
+      because that root is the extreme value next to the boundary.
+  3. Read the median:
+     - odd count (low has one extra): the median is low's root;
+     - even count: the median is (low's root + high's root) / 2.
+
+# Code explanation
+
+This problem contains my heap from problem 2. I extended it in two small ways:
+- The comparison "should value a sit above value b" is now one method, _before(a, b).
+In MinHeap it is a , b. _upheap and _downheap and the search used by delete all call 
+_before instead of writing "<" directly. Minheap therefore behaves exactly as in Pb2.
+- A new class MaxHeap(MinHeap) changes only that one method to a > b, so the Largest 
+value sits at the root. It inherits everything else.
+In a MaxHeap, peek() and extract_min() return the value on top, which is the larger one.
+
+     
+## How to run the code
+From the folder with the files (on Windows, use py instead of python3 if python3 is not recognized):
+
+For Problem 1:
+py merge_resources.py < merge_input1.txt (all the way to merge_input9.txt)
+
+For Problem 2:
+py Heap_Resources.py < heap_input1.txt (all the way to heap_input10.txt)
+
+For Problem 3:
+py Median_Resources.py < median_input1.txt (all the way to median_input11.txt)
+                                
+
+
+
+
+
+
+
+
+
+
+
+
+
